@@ -3,7 +3,9 @@
   :dependencies [[org.clojure/clojure "1.9.0"]]
   :source-paths ["src" "src/main/clojure"]
   :test-paths ["src/test" "src/test/clojure"]
+  :resource-paths ["src/test/resources"]
   :target-path "target/%s/"
   :profiles
     {:dev {:dependencies [[org.clojure/tools.namespace "0.3.0-alpha4"]
-                          [criterium "0.4.4"]]}})
+                          [criterium "0.4.4"]]
+           :resource-paths ["src/test/resources"]}})
