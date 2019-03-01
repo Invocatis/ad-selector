@@ -27,7 +27,7 @@
   {:return
     (let [coll (vals (get-in state [:database what]))]
       (cond
-        match (filter (motif/matches? match) coll)
-        predicate (filter predicate coll)
+        match (into [] (filter (motif/matches? match) coll))
+        predicate (into [] (filter predicate coll))
         id (get-in state [:database what id])
         :else (get-in state [:database what])))})
