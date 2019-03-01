@@ -11,7 +11,7 @@
   [state [_ what {:keys [id put patch apply]}]]
   (let [where (if id [what id] [what])]
     (cond
-      put (assoc-in state [what id] put)
+      put (assoc-in state [:database what id] put)
       patch (update-in state (into [:database] where) #(merge % patch))
       apply (update-in state (into [:database] where) apply))))
 
