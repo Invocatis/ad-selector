@@ -5,7 +5,6 @@
 (defn holistic
   [& pipeline]
   (fn engine [state command]
-    (println state command)
     (loop [pipeline pipeline
            context {:state state :command command}]
       (let [{:keys [command state]} context]
@@ -20,7 +19,7 @@
                                 (reduce (fn [state command] (:state (engine state command)))
                                         (or (:state context*) state) also))))
               (recur (rest pipeline)
-                     (merge-with #(or %2 %1) context*)))
+                     (merge-with #(or %2 %1) context context*)))
             (recur (rest pipeline) context)))))))
 
 (defn atomistic

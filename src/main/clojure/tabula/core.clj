@@ -1,6 +1,7 @@
 (ns tabula.core
   (:require
     [tabula.engine :as engine]
+    [tabula.matching.sampling :as sampling]
     [tabula.parts.database :as db]
     [tabula.parts.id :as id]
     [tabula.util :refer [swap-lr!]]))
@@ -8,13 +9,13 @@
 
 ;; Filtering -> Sampling -> Relevancy -> Selection ->
 
-(def state (atom {}))
+(defonce state (atom {}))
 
 (def engine|execution (engine/holistic id/handler db/execute))
 
 (def engine|query (engine/holistic db/query))
 
-(def engine|matching (engine/holistic db/query))
+(def engine|matching (engine/holistic (sampling/part (partial sampling/random 20)) db/query))
 
 (defn execute
   [command]

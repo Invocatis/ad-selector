@@ -8,3 +8,5 @@
     [tabula.core]))
 
 (def ads (-> "ads.edn" io/resource slurp read-string))
+
+(defonce x (doall (map (fn [ad] (execute [:create :ad {:entry ad}])) (take 100 (vals ads)))))
