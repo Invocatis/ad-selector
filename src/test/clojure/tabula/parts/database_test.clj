@@ -5,17 +5,17 @@
 
 (deftest test|create
   (testing "Execute Create Statement"
-    (is (= {:state {:database {:what {1 {:asdf 1 :id 1}}}}}
+    (is (= {:effects [[:PUT [:database :what 1] {:id 1 :asdf 1}]]}
            (execute {} [:create :what {:id 1 :entry {:asdf 1}}])))))
 
 (deftest test|update
   (testing "Execute Update Statement"
-    (is (= {:state {:database {:asdf {1 1}}}}
+    (is (= {:effects [[:PUT [:database :asdf 1] 1]]}
            (execute {} [:update :asdf {:id 1 :put 1}])))
-    (is (= {:state {:database {:asdf {1 {1 1 2 2}}}}}
+    (is (= {:effects [[:PATCH [:database :asdf 1] {2 2}]]}
            (execute {:database {:asdf {1 {1 1}}}}
                     [:update :asdf {:id 1 :patch {2 2}}])))
-    (is (= {:state {:database {:asdf {1 2}}}}
+    (is (= {:effects [[:APPLY [:database :asdf 1] inc]]}
            (execute {:database {:asdf {1 1}}}
                     [:update :asdf {:id 1 :apply inc}])))))
 

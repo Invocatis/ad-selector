@@ -5,19 +5,19 @@
 (defn execute|create
   [state [_ what {:keys [id entry]}]]
   (let [entry (if (map? entry) (assoc entry :id id) entry)]
-    (assoc-in state [:database what id] entry)))
+    [[:PUT [:database what id] entry]]))
 
 (defn execute|update
   [state [_ what {:keys [id put patch apply]}]]
-  (let [where (if id [what id] [what])]
+  (let [where (if id [:database what id] [:database what])]
     (cond
-      put (assoc-in state [:database what id] put)
-      patch (update-in state (into [:database] where) #(merge % patch))
-      apply (update-in state (into [:database] where) apply))))
+      put   [[:PUT where put]]
+      patch [[:PATCH where patch]]
+      apply [[:APPLY where apply]])))
 
 (defn execute
   [state [op :as command]]
-  {:state
+  {:effects
     (condp = op
       :create (execute|create state command)
       :update (execute|update state command))})

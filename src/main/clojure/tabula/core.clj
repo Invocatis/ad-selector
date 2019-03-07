@@ -1,5 +1,6 @@
 (ns tabula.core
   (:require
+    [clojure.core.async :refer [go]]
     [tabula.engine :as engine]
     [tabula.matching.sampling :as sampling]
     [tabula.matching.relevancy :as relevancy]
@@ -11,7 +12,9 @@
 
 ;; Filtering -> Sampling -> Relevancy -> Selection ->
 
-(def engine|execution (engine/holistic id/handler db/execute))
+(def engine|execution (engine/holistic
+                       id/handler
+                       db/execute))
 
 (def engine|query (engine/holistic db/query))
 
@@ -38,5 +41,7 @@
 
 (defn match
   [spec]
-  (let [engine (get-in @state [:engines :matching])]
-    (:return (engine @state [:query :ad {:spec spec}]))))
+  (let [engine (get-in @state [:engines :matching])
+        {:keys [effects result]} (engine @state [:query :ad {:spec spec}])]
+    (go (swap! state #(reduce engine/commit % effects)))
+    result))

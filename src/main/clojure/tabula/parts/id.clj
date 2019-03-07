@@ -2,9 +2,8 @@
 
 (defn handle|create
   [state [op what params]]
-  (let [state (update-in state [:database :ids what] #(inc (or % 0)))]
-    {:state state
-     :command [op what (assoc params :id (get-in state [:database :ids what]))]}))
+  {:effects [[:APPLY [:database :ids what] #(inc (or % 0))]]
+   :command [op what (assoc params :id (or (get-in state [:database :ids what]) 1))]})
 
 (defn handler
   [state [op :as command]]
