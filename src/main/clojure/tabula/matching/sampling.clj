@@ -8,7 +8,8 @@
 
    Runs in linear time, should be optimized"
   [n coll & [_]]
-  (->> coll shuffle (take n)))
+  (when-not (empty? coll)
+    (->> coll shuffle (take n))))
 
 (defn part
   [sampling-fn]
