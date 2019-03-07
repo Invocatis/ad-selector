@@ -8,7 +8,7 @@
     (loop [pipeline pipeline
            context {:state state :command command}]
       (let [{:keys [command state]} context]
-        (if (or (empty? pipeline) (nil? context))
+        (if (or (empty? pipeline) (nil? context) (nil? command))
           context
           (if-let [context* (apply (first pipeline) [state command])]
             (if-let [[_ also] (find context* :also)]
