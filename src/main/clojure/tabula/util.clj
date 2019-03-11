@@ -27,4 +27,14 @@
 
 (defn contains-in?
   [m ks]
-  (contains? (get-in m (drop-last ks)) (last ks)))    
+  (contains? (get-in m (drop-last ks)) (last ks)))
+
+(defn max-by
+  ([keyfn x]
+   x)
+  ([keyfn x y]
+   (if (> (keyfn x) (keyfn y))
+     x
+     y))
+  ([keyfn x y & more]
+   (reduce (partial max-by keyfn) (max-by x y) more)))

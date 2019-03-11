@@ -1,4 +1,4 @@
-(ns tabula.core
+s(ns tabula.core
   (:require
     [clojure.core.async :refer [go]]
     [tabula.engine :as engine]
@@ -24,11 +24,16 @@
 
 (def engine|query (engine/holistic db/query))
 
-(def engine|matching (engine/holistic (cache (parametrized-sieve :ad (parameter-filter [:language])) #{:query})
-                                      (cache (parametrized-sieve :ad (parameter-filter [:country])) #{:query})
-                                      (sampling/part (partial sampling/random 4))
-                                      (relevancy/part relevancy/random)
-                                      (selection/part selection/random)
+(def engine|matching (engine/holistic (cache (engine/holistic #(do %1 %2 (println "Sieve!") nil)
+                                                              (parametrized-sieve :ad (parameter-filter [:language]))
+                                                              (parametrized-sieve :ad (parameter-filter [:country])))
+                                             #{:query})
+                                      (cache
+                                        (engine/holistic
+                                          (relevancy/part relevancy/weighted)
+                                          (sampling/part sampling/relevant))
+                                        #{:query})
+                                      (selection/part (selection/entropic selection/most-relevant))
                                       db/query))
 
 (defonce state (atom {:engines {:execution engine|execution

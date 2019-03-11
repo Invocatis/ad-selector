@@ -8,8 +8,13 @@
 
    Runs in linear time, should be optimized"
   [n coll & [_]]
+  (println n (count coll))
   (when-not (empty? coll)
     (->> coll shuffle (take n))))
+
+(defn relevant
+  [coll {:keys [threshold] :or {threshold 1/2}}]
+  (filter (fn [{:keys [relevancy]}] (and relevancy (<= threshold relevancy))) coll))
 
 (defn part
   [sampling-fn]

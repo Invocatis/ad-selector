@@ -8,17 +8,27 @@
   [spec target]
   (rand))
 
+(defn weighted
+  [spec target]
+  (if spec
+    (let [keyset (:interests target)]
+      (/ (reduce +
+                 (map (fn [[k v]] (if (contains? keyset k) v 0)) spec))
+         (reduce + (vals spec))))
+    1))
+
 (defn assoc-relevancy
   [f spec ad]
   (assoc ad :relevancy (f spec ad)))
 
 (defn part
   [relevancy-fn]
-  (fn [state [_ _ {:keys [spec] :as params}]]
-    {:state
-     (update-in state [:database :ad]
-                (fn [ads]
-                  (->> ads
-                       (map (fn [[k v]]
-                              [k (assoc-relevancy relevancy-fn spec v)]))
-                       (into {}))))}))
+  (fn [state [_ _ {:keys [interests] :as params}]]
+    (when interests
+      {:state
+       (update-in state [:database :ad]
+                  (fn [ads]
+                    (->> ads
+                         (map (fn [[k v]]
+                                [k (assoc-relevancy relevancy-fn interests v)]))
+                         (into {}))))})))

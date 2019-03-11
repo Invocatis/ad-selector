@@ -5,8 +5,11 @@
     [tabula.parts.id :as id]
     [tabula.parts.database :as db])
   (:use
-    [tabula.core]))
+    [tabula.core]
+    [sampledata]))
 
 (def ads (-> "ads.edn" io/resource slurp read-string))
 
-(defonce x (doall (map (fn [ad] (execute [:create :ad {:entry ad}])) (take 100 (vals ads)))))
+(def ads (generate 10000))
+
+(defonce x (doall (map (fn [ad] (execute [:create :ad {:entry ad}])) (vals)))) ;ads))))
