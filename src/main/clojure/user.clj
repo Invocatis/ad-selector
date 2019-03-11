@@ -12,4 +12,4 @@
 
 (def ads (generate 10000))
 
-(defonce x (doall (map (fn [ad] (execute [:create :ad {:entry ad}])) (vals)))) ;ads))))
+(defonce x (doall (map (fn [ad] (execute [:create :ad {:entry ad}])) (vals ads))))

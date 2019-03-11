@@ -1,4 +1,4 @@
-s(ns tabula.core
+(ns tabula.core
   (:require
     [clojure.core.async :refer [go]]
     [tabula.engine :as engine]
