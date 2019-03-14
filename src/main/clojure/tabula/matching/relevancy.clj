@@ -10,7 +10,7 @@
 
 (defn weighted
   [spec target]
-  (if spec
+  (if-not (empty? spec)
     (let [keyset (:interests target)]
       (/ (reduce +
                  (map (fn [[k v]] (if (contains? keyset k) v 0)) spec))
