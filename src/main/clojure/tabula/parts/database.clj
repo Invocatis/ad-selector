@@ -4,12 +4,14 @@
 
 (defn execute|create
   [state [_ what {:keys [id entry]}]]
-  (let [entry (if (map? entry) (assoc entry :id id) entry)]
-    [[:PUT [:database what id] entry]]))
+  (let [what (if (vector? what) what [what])
+        entry (if (map? entry) (assoc entry :id id) entry)]
+    [[:PUT (conj (into [:database] what) id) entry]]))
 
 (defn execute|update
   [state [_ what {:keys [id put patch apply]}]]
-  (let [where (if id [:database what id] [:database what])]
+  (let [what (if (vector? what) what [what])
+        where (if id (conj (into [:database] what) id) (into [:database] what))]
     (cond
       put   [[:PUT where put]]
       patch [[:PATCH where patch]]

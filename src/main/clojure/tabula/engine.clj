@@ -29,7 +29,7 @@
     :APPLY (commit|apply state command)
     :REMOVE (commit|remove state command)))
 
-(defn holistic
+(defn engine
   [& pipeline]
   (fn engine [state command]
     (loop [pipeline pipeline

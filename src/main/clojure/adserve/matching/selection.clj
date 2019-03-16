@@ -1,4 +1,4 @@
-(ns tabula.matching.selection
+(ns adserve.matching.selection
   (:require
     [tabula.util :refer [max-by]]))
 

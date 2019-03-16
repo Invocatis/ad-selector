@@ -1,4 +1,4 @@
-(ns tabula.matching.relevancy)
+(ns adserve.matching.relevancy)
 
 ;; Measurement on the how relevant an advert is to a channel
 ;; Various functions for differing strategires

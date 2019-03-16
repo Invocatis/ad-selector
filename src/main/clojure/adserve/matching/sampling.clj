@@ -1,4 +1,4 @@
-(ns tabula.matching.sampling)
+(ns adserve.matching.sampling)
 
 ;; Logic for selecting a relatively small sample from the whole of advertisements
 ;; Various functions for differing strategires
