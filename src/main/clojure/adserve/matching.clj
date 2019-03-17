@@ -1,6 +1,5 @@
 (ns adserve.matching
   (:require
-    [clojure.core.async :refer [go]]
     [adserve.matching.sampling :as sampling]
     [adserve.matching.relevancy :as relevancy]
     [adserve.matching.selection :as selection]
@@ -63,9 +62,9 @@
 
 (def sieve
   (tabula/engine
-    ; (cache date-sieve
-    ;   #{:query}
-    ;   (fn [ad] (.. (t/now) hourOfDay roundFloorCopy)))
+    (cache date-sieve
+      #{:query}
+      (fn [ad] (.. (t/now) hourOfDay roundFloorCopy)))
     date-sieve
     limit-sieve
     (parametrized-sieve :ad (parameter-filter [:language]))
@@ -89,7 +88,4 @@
 
 (defn match
   [state spec]
-  (let [engine (get-in @state [:engines :matching])
-        {:keys [effects return]} (engine @state [:query :ad spec])]
-    (go (swap! state #(reduce engine/commit % effects)))
-    return))
+  (engine|matching state [:query :ad spec]))
