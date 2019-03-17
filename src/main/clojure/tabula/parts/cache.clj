@@ -10,7 +10,7 @@
             info (ic command)]
         (if (contains-in? state [::cache part info])
             {:state (assoc state :database (get-in state [::cache part info]))}
-          (let [result (apply part [state info])
+          (let [result (apply part [state command])
                 effect [:PUT [::cache part info] (get-in result [:state :database])]]
             (assoc result :effects
               (if (:effects result)

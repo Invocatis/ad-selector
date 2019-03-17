@@ -3,7 +3,7 @@
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/core.async "0.4.490"]
                  [compojure "1.6.1"]
-                 [motif "0.1.0"]]
+                 [clj-time "0.15.0"]]
   :source-paths ["src" "src/main/clojure"]
   :test-paths ["src/test" "src/test/clojure"]
   :target-path "target/%s/"

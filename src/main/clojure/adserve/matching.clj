@@ -10,7 +10,8 @@
     [tabula.parts.sieve :refer [parametrized-sieve]]
     [tabula.parts.database :as db]
     [tabula.parts.cache :refer [cache]]
-    [tabula.util :refer [filter-by-vals]]))
+    [tabula.util :refer [filter-by-vals]]
+    [clj-time.core :as t]))
 
 (defn times-serviced-to-channel
   [state ad-id channel-id]
@@ -49,8 +50,23 @@
             (fn [ads]
               (filter-by-vals #(within-limits? state % channel-id) ads)))})
 
+(defn date-sieve
+  [state [op what command]]
+  {:state (update-in state [:database :ad]
+            (fn [ads]
+              (filter-by-vals
+                (fn [{:keys [start-date end-date]}]
+                  (let [now (t/now)]
+                    (and (t/before? start-date now)
+                         (t/after? end-date now))))
+                ads)))})
+
 (def sieve
   (tabula/engine
+    ; (cache date-sieve
+    ;   #{:query}
+    ;   (fn [ad] (.. (t/now) hourOfDay roundFloorCopy)))
+    date-sieve
     limit-sieve
     (parametrized-sieve :ad (parameter-filter [:language]))
     (parametrized-sieve :ad (parameter-filter [:country]))))

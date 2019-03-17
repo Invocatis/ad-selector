@@ -1,6 +1,4 @@
-(ns tabula.parts.database
-  (:require
-    [motif.core :as motif]))
+(ns tabula.parts.database)
 
 (defn execute|create
   [state [_ what {:keys [id entry]}]]
@@ -29,7 +27,6 @@
   {:return
     (let [coll (vals (get-in state [:database what]))]
       (cond
-        match (into [] (filter (motif/matches? match) coll))
         predicate (into [] (filter predicate coll))
         id (get-in state [:database what id])
         :else (get-in state [:database what])))})
