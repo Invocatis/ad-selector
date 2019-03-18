@@ -4,7 +4,7 @@
   (:use
     [adserve.core]
     [adserve.action :as action]
-    [adserve.matching]
+    [adserve.matching :as matching]
     [sampledata]))
 
 (def state (atom {}))

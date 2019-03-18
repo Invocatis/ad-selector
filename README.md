@@ -49,3 +49,76 @@ Here's what we do care about:
 
 Hope you have fun :-)  
 - Red Pineapple Media Engineering Team
+
+# USAGE
+
+This section shall serve as a brief overview of how to explore the adserve logic. This is not necessarily how it would be used in production, but rather just how you may see that it works.
+
+## Setting up
+
+Start up your repl. You should be put into the user namespace, but if not, switch to it.
+
+To create 100 example ads in the database, run the following:
+```clojure
+(create-ads 100)
+```
+
+## Simple Usage
+
+Each ad will have a language, country, a set of interests, and a start and end date. These are randomly generated, so they likely will not make much sense but will suffice.
+
+Let's query the first ad:
+```clojure
+(action/exec action/query state [:query :ad {:id 1}])
+; =>
+; {:language :en,
+;  :country :gb,
+;  :interests #{:handball :cheerleading :table_football},
+;  :start-date
+;  #object[org.joda.time.DateMidnight 0x22ee73c "2018-11-23T00:00:00.000Z"],
+;  :end-date
+;  #object[org.joda.time.DateMidnight 0x34dc755 "2019-08-09T00:00:00.000Z"],
+;  :id 1}
+```
+This is the ad I got when I ran through this. Let's try to match this ad:
+```clojure
+(action/exec matching/match state
+  {:language :en :country :gb
+   :interests {:handball 100, :cheerleading 100, :table_football 100}})
+;=>
+; {:language :en,
+;  :country :gb,
+;  :interests #{:handball :cheerleading :table_football},
+;  :start-date
+;  #object[org.joda.time.DateMidnight 0x22ee73c "2018-11-23T00:00:00.000Z"],
+;  :end-date
+;  #object[org.joda.time.DateMidnight 0x34dc755 "2019-08-09T00:00:00.000Z"],
+;  :id 1,
+;  :relevancy 1}
+```
+
+We can see that our matching returned our ad, with an additional field describe how relevant it is compared to our passed parameter. The interests parameter is a weighted map describing the importance of each interest.
+
+When delivering an ad, we not only want a relevant ad, but also the side effect adding an entry to the database logging the service. This can be done as follows:
+```clojure
+(action/exec action/serve-ad state
+  {:channel-id 1
+   :language :en :country :gb
+   :interests {:handball 100, :cheerleading 100, :table_football 100}})
+```
+
+We can then verify the service is entered into the database:
+```clojure
+(action/exec action/query state
+  [:query :services {}])
+```
+
+Finally, we want to be able to limit how many times an ad can be delivered, and delivered to a certain channel. This is done as follows:
+
+```clojure
+(action/exec action/execute state
+  [:create [:limit 1] ;[:limit ad-id]
+    {:entry {:channel 1 :times 100}}])
+```
+
+This should hopefully serve as a cursory introduction. I hope to go over the whole usage more specifically during code review.

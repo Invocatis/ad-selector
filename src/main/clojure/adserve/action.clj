@@ -27,12 +27,13 @@
 
 (defn serve-ad
   [state {:keys [channel-id :as spec]}]
-  (let [{:keys [id] :as ad} (match state spec)
+  (let [{:keys [id] :as ad} (:return (match state spec))
         {:keys [effects]} (execute state
                             [:create [:database :services id channel-id]
                                      {:time (java.util.Date.)}])]
-    {:return ad
-     :effects effects}))
+    (when-not (empty? ad)
+      {:return ad
+       :effects effects})))
 
 (defn exec
   [action state & params]

@@ -29,7 +29,6 @@
 
 (defn within-limit?
   [state ad to-channel {:keys [channel times] :as limit}]
-  (println limit)
   (cond
     (= channel :*)
     (< (times-serviced state (:id ad)) times)
