@@ -26,11 +26,11 @@
   (engine|query state command))
 
 (defn serve-ad
-  [state {:keys [channel-id :as spec]}]
+  [state {:keys [channel-id] :as spec}]
   (let [{:keys [id] :as ad} (:return (match state spec))
         {:keys [effects]} (execute state
-                            [:create [:database :services id channel-id]
-                                     {:time (java.util.Date.)}])]
+                            [:create [:services id channel-id]
+                                     {:entry {:time (java.util.Date.)}}])]
     (when-not (empty? ad)
       {:return ad
        :effects effects})))
@@ -39,6 +39,6 @@
   [action state & params]
   (locking state
     (let [s @state
-          {:keys [return effects]} (apply action (into [s] params))]
+          {:keys [return effects] :as asdf} (apply action (into [s] params))]
       (reset! state (reduce engine/commit s effects))
       return)))
