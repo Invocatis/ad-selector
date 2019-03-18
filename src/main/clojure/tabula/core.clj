@@ -1,12 +1,5 @@
-(ns tabula.core)
+(ns tabula.core
+  (:require
+    [tabula.engine]))
 
-
-;; -> Sampling -> Relevancy -> Selection ->
-
-(defn get-ad
-  [ads sample relevance select spec]
-  (->> ads sample (sort-by (partial relevance spec)) select))
-
-(defn index
-  [index ky vl]
-  (update index ky #(conj (or % #{}) vl)))
+(def engine tabula.engine/engine)
