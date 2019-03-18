@@ -23,7 +23,7 @@
 
 (defn query
   [state command]
-  (engine|query @state command))
+  (engine|query state command))
 
 (defn serve-ad
   [state {:keys [channel-id :as spec]}]

@@ -1,4 +1,1 @@
-(ns adserve.core
-  (:require))
-
-(def state (atom {}))
+(ns adserve.core)
