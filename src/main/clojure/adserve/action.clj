@@ -39,6 +39,6 @@
   [action state & params]
   (locking state
     (let [s @state
-          {:keys [return effects] :as asdf} (apply action (into [s] params))]
+          {:keys [return effects]} (apply action (into [s] params))]
       (reset! state (reduce engine/commit s effects))
       return)))

@@ -8,7 +8,7 @@ Please ping us whenever you're done, and we'll schedule a 90 minute **code revie
 
 ## Language: Clojure
 
-Since most new code at RPM is written in Clojure, we'd like you to try use Clojure for this challenge. You don't need to be a Clojure expert! Just let us know what your Clojure experience level is, and we'll evaluate your submission from that perspective.
+Since most new code at *** is written in Clojure, we'd like you to try use Clojure for this challenge. You don't need to be a Clojure expert! Just let us know what your Clojure experience level is, and we'll evaluate your submission from that perspective.
 
 You're a long-term Clojure pro? We'll be hoping to see idiomatic syntax, design, and a strong understanding of the Clojure core API.
 
@@ -44,11 +44,11 @@ Here's what we do care about:
 - The reasons behind your technical decisions -- it's important that you're ready to explain them since we'll be going through your solution in detail.
 - That we always get suitable ads according to the constraints -- how do you make sure that your code does what you think it does?
 - What questions you'll ask -- it's more than ok to drop us a line or even give us a call on skype if you have questions or want to discuss some approach with us. We are happy to discuss the problem with you, make something more clear in case it's not or discuss solutions.
-- Finally, that we are able to run your application without having to ask you questions over email. Make use of the README file, and be especially verbose if you're going to use Windows -- we're mostly Linux and Mac users in RPM.
+- Finally, that we are able to run your application without having to ask you questions over email. Make use of the README file, and be especially verbose if you're going to use Windows -- we're mostly Linux and Mac users in ***.
 
 
 Hope you have fun :-)  
-- Red Pineapple Media Engineering Team
+- ***************** Engineering Team
 
 # USAGE
 

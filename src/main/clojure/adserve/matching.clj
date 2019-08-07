@@ -80,7 +80,7 @@
 
 (def engine|matching
   (tabula/engine
-    sieve-cache
+    ; sieve-cache
     matcher-cache
     (selection/part (selection/entropic selection/most-relevant))
     db/query))
